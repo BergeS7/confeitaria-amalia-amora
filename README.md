@@ -1,4 +1,4 @@
-# Amalia & Amora: Aconchego Artesanal
+# Amalia & Amora: Landing Page de Padaria
 
 Crie uma landing page completa, moderna, responsiva e visualmente sofisticada para uma padaria artesanal chamada:
 

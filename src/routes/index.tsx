@@ -3,6 +3,9 @@ import { useEffect, useState } from "react";
 import { Menu, X, MapPin, Clock, Phone, Instagram, Star, Wheat, Coffee, Cake } from "lucide-react";
 
 import { Reveal } from "@/components/Reveal";
+import { Cardapio } from "@/components/Cardapio";
+import { EncomendaForm } from "@/components/EncomendaForm";
+import { SITE_URL, TELEFONE_EXIBICAO, linkWhatsApp } from "@/lib/contato";
 import hero from "@/assets/hero.jpg";
 import paes from "@/assets/paes.jpg";
 import bolos from "@/assets/bolos.jpg";
@@ -38,7 +41,12 @@ export const Route = createFileRoute("/")({
         content:
           "Sabor que conquista em cada mordida. Pães fresquinhos, doces e salgados todos os dias em Penalva - MA.",
       },
-      { property: "og:image", content: hero },
+      { property: "og:url", content: `${SITE_URL}/` },
+      { property: "og:image", content: `${SITE_URL}/og-image.jpg` },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:image:alt", content: "Emblema dourado da confeitaria Amália Amora" },
+      { name: "twitter:image", content: `${SITE_URL}/og-image.jpg` },
       { property: "og:locale", content: "pt_BR" },
       { property: "og:site_name", content: "Amália Amora" },
       { name: "geo.region", content: "BR-MA" },
@@ -46,6 +54,7 @@ export const Route = createFileRoute("/")({
       { name: "geo.position", content: "-3.324734;-45.288633" },
       { name: "ICBM", content: "-3.324734, -45.288633" },
     ],
+    links: [{ rel: "canonical", href: `${SITE_URL}/` }],
     scripts: [
       {
         type: "application/ld+json",
@@ -53,6 +62,9 @@ export const Route = createFileRoute("/")({
           "@context": "https://schema.org",
           "@type": "Bakery",
           name: "Amália Amora — Confeitaria doces e salgados",
+          url: `${SITE_URL}/`,
+          image: `${SITE_URL}/og-image.jpg`,
+          logo: `${SITE_URL}/icon-192.png`,
           slogan: "Sabor que conquista em cada mordida",
           description:
             "Confeitaria e panificação em Penalva - MA: pães, bolos, doces e salgados. Encomendas pelo WhatsApp.",
@@ -91,12 +103,8 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-// Dados de contato — altere somente aqui
-const TELEFONE = "5598984693417"; // DDI + DDD + número, só dígitos
-const TELEFONE_EXIBICAO = "(98) 98469-3417";
-const WHATSAPP = `https://wa.me/${TELEFONE}?text=${encodeURIComponent(
-  "Olá! Gostaria de fazer um pedido na Amália Amora.",
-)}`;
+// Dados de contato — telefone em src/lib/contato.ts, cardápio em src/lib/cardapio.ts
+const WHATSAPP = linkWhatsApp("Olá! Gostaria de fazer um pedido na Amália Amora.");
 const INSTAGRAM_USUARIO = "confeitariaamaliaamora";
 const INSTAGRAM = `https://www.instagram.com/${INSTAGRAM_USUARIO}/`;
 const ENDERECO = ["Pov. Jacaré - R. do Comércio, S/N", "Penalva - MA, 65213-000"];
@@ -114,8 +122,8 @@ const nav = [
   { label: "Início", href: "#inicio" },
   { label: "Sobre", href: "#sobre" },
   { label: "Produtos", href: "#produtos" },
-  { label: "Especiais", href: "#especiais" },
-  { label: "Nossa Padaria", href: "#padaria" },
+  { label: "Cardápio", href: "#cardapio" },
+  { label: "Encomendas", href: "#encomendas" },
   { label: "Contato", href: "#contato" },
 ];
 
@@ -142,15 +150,32 @@ const categorias = [
     nome: "Pães Artesanais",
     desc: "Crocantes por fora, macios por dentro e preparados diariamente.",
     img: paes,
+    cardapio: "paes",
   },
   {
     nome: "Bolos & Tortas",
     desc: "Receitas especiais para transformar qualquer ocasião.",
     img: bolos,
+    cardapio: "bolos",
   },
-  { nome: "Doces", desc: "Pequenos detalhes capazes de deixar o seu dia mais doce.", img: doces },
-  { nome: "Cafés", desc: "O acompanhamento perfeito para nossos produtos.", img: cafes },
-  { nome: "Salgados", desc: "Opções deliciosas para qualquer hora do dia.", img: salgados },
+  {
+    nome: "Doces",
+    desc: "Pequenos detalhes capazes de deixar o seu dia mais doce.",
+    img: doces,
+    cardapio: "doces",
+  },
+  {
+    nome: "Cafés",
+    desc: "O acompanhamento perfeito para nossos produtos.",
+    img: cafes,
+    cardapio: undefined,
+  },
+  {
+    nome: "Salgados",
+    desc: "Opções deliciosas para qualquer hora do dia.",
+    img: salgados,
+    cardapio: "salgados",
+  },
 ];
 
 const especiais = [
@@ -161,11 +186,13 @@ const especiais = [
 
 const depoimentos = [
   {
-    texto:
-      "Tudo é maravilhoso. O pão sempre fresquinho e o ambiente é muito aconchegante.",
+    texto: "Tudo é maravilhoso. O pão sempre fresquinho e o ambiente é muito aconchegante.",
     nome: "Marina L.",
   },
-  { texto: "Os bolos são incríveis e o atendimento faz você se sentir em casa.", nome: "Rafael S." },
+  {
+    texto: "Os bolos são incríveis e o atendimento faz você se sentir em casa.",
+    nome: "Rafael S.",
+  },
   { texto: "Virou meu lugar favorito para tomar café.", nome: "Juliana P." },
 ];
 
@@ -173,7 +200,11 @@ const instaGrid = [paes, cafes, doces, ambiente2, bolos, croissant];
 
 function Logo({ tone = "coffee" }: { tone?: "coffee" | "light" }) {
   return (
-    <a href="#inicio" className="flex items-center gap-2.5" aria-label="Amália Amora, voltar ao início">
+    <a
+      href="#inicio"
+      className="flex items-center gap-2.5"
+      aria-label="Amália Amora, voltar ao início"
+    >
       <img src={icone} alt="" width={44} height={44} className="h-10 w-10 sm:h-11 sm:w-11" />
       <span className="flex flex-col leading-none">
         <span
@@ -291,6 +322,8 @@ function WhatsAppFloat() {
 }
 
 function Index() {
+  const [categoriaCardapio, setCategoriaCardapio] = useState("paes");
+
   return (
     <div id="inicio" className="overflow-x-hidden bg-background">
       <Header />
@@ -404,9 +437,8 @@ function Index() {
                     {c.desc}
                   </p>
                   <a
-                    href={WHATSAPP}
-                    target="_blank"
-                    rel="noreferrer"
+                    href="#cardapio"
+                    onClick={() => c.cardapio && setCategoriaCardapio(c.cardapio)}
                     className="mt-6 inline-flex w-fit items-center gap-2 border-b border-gold-deep/40 pb-1 text-sm text-gold-deep transition-all duration-300 hover:gap-3 hover:border-gold-deep"
                   >
                     Ver opções <span aria-hidden>→</span>
@@ -432,9 +464,7 @@ function Index() {
         />
         <div className="relative mx-auto max-w-7xl px-5 lg:px-10">
           <Reveal>
-            <p className="text-xs uppercase tracking-[0.32em] text-gold">
-              Especial do dia
-            </p>
+            <p className="text-xs uppercase tracking-[0.32em] text-gold">Especial do dia</p>
             <h2 className="mt-5 text-4xl text-gold-gradient sm:text-5xl">Saindo do forno</h2>
             <p className="mt-4 max-w-xl text-primary-foreground/75">
               Todos os dias nossa cozinha prepara algo especial.
@@ -466,9 +496,7 @@ function Index() {
 
           <Reveal delay={150}>
             <a
-              href={WHATSAPP}
-              target="_blank"
-              rel="noreferrer"
+              href="#cardapio"
               className="mt-12 inline-flex rounded-full bg-gold-gradient px-8 py-4 text-sm font-medium text-gold-foreground transition-transform duration-300 hover:-translate-y-0.5"
             >
               Ver cardápio
@@ -476,6 +504,9 @@ function Index() {
           </Reveal>
         </div>
       </section>
+
+      {/* CARDÁPIO */}
+      <Cardapio categoria={categoriaCardapio} onCategoria={setCategoriaCardapio} />
 
       {/* SOBRE */}
       <section id="sobre" className="mx-auto max-w-7xl px-5 py-20 lg:px-10 lg:py-28">
@@ -486,9 +517,7 @@ function Index() {
               Uma padaria feita de histórias, aromas e afeto.
             </h2>
             <div className="mt-7 space-y-5 text-base leading-relaxed text-muted-foreground">
-              <p>
-                Na Amália Amora acreditamos que comida também é uma forma de carinho.
-              </p>
+              <p>Na Amália Amora acreditamos que comida também é uma forma de carinho.</p>
               <p>
                 Cada pão, bolo ou doce é preparado com cuidado, ingredientes selecionados e aquele
                 toque artesanal que transforma uma simples receita em uma lembrança especial.
@@ -560,27 +589,51 @@ function Index() {
       </section>
 
       {/* ENCOMENDAS */}
-      <section className="mx-auto max-w-7xl px-5 py-20 lg:px-10 lg:py-28">
-        <Reveal>
-          <div className="grain-cream overflow-hidden rounded-[2.5rem] bg-card px-7 py-14 text-center shadow-soft sm:px-16 lg:py-20">
+      <section id="encomendas" className="grain-cream bg-sand/50 py-20 lg:py-28">
+        <div className="mx-auto grid max-w-7xl items-start gap-12 px-5 lg:grid-cols-[1fr_1.15fr] lg:gap-16 lg:px-10">
+          <Reveal className="lg:sticky lg:top-28">
             <p className="eyebrow">Encomendas</p>
-            <h2 className="mx-auto mt-5 max-w-3xl text-4xl leading-tight text-primary sm:text-5xl">
+            <h2 className="mt-5 text-4xl leading-tight text-primary sm:text-5xl">
               Seu momento especial merece um sabor especial.
             </h2>
-            <p className="mx-auto mt-6 max-w-2xl leading-relaxed text-muted-foreground">
-              Bolos, tortas, doces e kits preparados especialmente para aniversários, reuniões,
-              presentes e momentos especiais.
+            <p className="mt-6 max-w-xl leading-relaxed text-muted-foreground">
+              Bolos, tortas, doces, salgados e kits para aniversários, reuniões e presentes.
+              Preencha o formulário e a mensagem chega prontinha no nosso WhatsApp.
             </p>
-            <a
-              href={WHATSAPP}
-              target="_blank"
-              rel="noreferrer"
-              className="mt-9 inline-flex rounded-full bg-gold px-9 py-4 text-sm font-medium text-gold-foreground shadow-soft transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lift"
-            >
-              Fazer uma encomenda
-            </a>
-          </div>
-        </Reveal>
+            <ol className="mt-9 space-y-5">
+              {[
+                ["1", "Conte o que você precisa", "Tipo, sabor, quantidade e data."],
+                ["2", "Confirmamos pelo WhatsApp", "Valores, detalhes e disponibilidade."],
+                ["3", "Retire ou receba", "Na loja ou com entrega combinada."],
+              ].map(([n, t, d]) => (
+                <li key={n} className="flex gap-4">
+                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-primary font-display text-lg text-gold">
+                    {n}
+                  </span>
+                  <div>
+                    <p className="text-primary">{t}</p>
+                    <p className="text-sm text-muted-foreground">{d}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+            <p className="mt-9 text-sm text-muted-foreground">
+              Prefere conversar direto? Chame no{" "}
+              <a
+                href={WHATSAPP}
+                target="_blank"
+                rel="noreferrer"
+                className="text-gold-deep underline underline-offset-4"
+              >
+                WhatsApp {TELEFONE_EXIBICAO}
+              </a>
+              .
+            </p>
+          </Reveal>
+          <Reveal delay={120}>
+            <EncomendaForm />
+          </Reveal>
+        </div>
       </section>
 
       {/* DEPOIMENTOS */}
@@ -760,7 +813,9 @@ function Index() {
           <div className="grid gap-10 sm:grid-cols-3">
             <div>
               <Logo tone="light" />
-              <p className="mt-4 font-script text-2xl text-gold">Sabor que conquista em cada mordida</p>
+              <p className="mt-4 font-script text-2xl text-gold">
+                Sabor que conquista em cada mordida
+              </p>
               <address className="mt-4 text-sm not-italic leading-relaxed text-primary-foreground/70">
                 {ENDERECO.join(" · ")}
                 <br />

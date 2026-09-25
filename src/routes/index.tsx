@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Menu, X, MapPin, Clock, Phone, Instagram, Star, Wheat, Coffee, Cake } from "lucide-react";
+import { Menu, X, MapPin, Clock, Phone, Instagram, Wheat, Coffee, Cake } from "lucide-react";
 
 import { Reveal } from "@/components/Reveal";
 import { Cardapio } from "@/components/Cardapio";
@@ -184,18 +184,6 @@ const especiais = [
   { nome: "Croissant Artesanal", preco: "R$ 8,90", img: croissant },
   { nome: "Pão de Fermentação Natural", preco: "R$ 16,90", img: sourdough },
   { nome: "Fatia de Bolo Caseiro", preco: "R$ 12,90", img: fatia },
-];
-
-const depoimentos = [
-  {
-    texto: "Tudo é maravilhoso. O pão sempre fresquinho e o ambiente é muito aconchegante.",
-    nome: "Marina L.",
-  },
-  {
-    texto: "Os bolos são incríveis e o atendimento faz você se sentir em casa.",
-    nome: "Rafael S.",
-  },
-  { texto: "Virou meu lugar favorito para tomar café.", nome: "Juliana P." },
 ];
 
 const instaGrid = [paes, cafes, doces, ambiente2, bolos, croissant];
@@ -635,34 +623,6 @@ function Index() {
           <Reveal delay={120}>
             <EncomendaForm />
           </Reveal>
-        </div>
-      </section>
-
-      {/* DEPOIMENTOS */}
-      <section className="border-y border-border/70 bg-sand/40 py-20 lg:py-24">
-        <div className="mx-auto max-w-7xl px-5 lg:px-10">
-          <Reveal>
-            <h2 className="text-4xl text-primary sm:text-5xl">Quem prova, volta.</h2>
-          </Reveal>
-          <div className="mt-12 grid gap-7 md:grid-cols-3">
-            {depoimentos.map((d, i) => (
-              <Reveal key={d.nome} delay={i * 100}>
-                <figure className="flex h-full flex-col rounded-[2rem] bg-card p-8 shadow-soft transition-transform duration-500 hover:-translate-y-1">
-                  <div className="flex gap-1 text-gold-deep">
-                    {Array.from({ length: 5 }).map((_, s) => (
-                      <Star key={s} className="h-4 w-4 fill-current" />
-                    ))}
-                  </div>
-                  <blockquote className="mt-5 flex-1 text-lg leading-relaxed text-primary italic">
-                    “{d.texto}”
-                  </blockquote>
-                  <figcaption className="mt-6 text-xs uppercase tracking-[0.2em] text-muted-foreground">
-                    {d.nome}
-                  </figcaption>
-                </figure>
-              </Reveal>
-            ))}
-          </div>
         </div>
       </section>
 

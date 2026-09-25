@@ -180,10 +180,11 @@ const categorias = [
   },
 ];
 
-const especiais = [
-  { nome: "Croissant Artesanal", preco: "R$ 8,90", img: croissant },
-  { nome: "Pão de Fermentação Natural", preco: "R$ 16,90", img: sourdough },
-  { nome: "Fatia de Bolo Caseiro", preco: "R$ 12,90", img: fatia },
+// `preco` é opcional: sem preço, o card mostra só o nome
+const especiais: { nome: string; preco?: string; img: string }[] = [
+  { nome: "Croissant Artesanal", img: croissant },
+  { nome: "Pão de Fermentação Natural", img: sourdough },
+  { nome: "Fatia de Bolo Caseiro", img: fatia },
 ];
 
 const instaGrid = [paes, cafes, doces, ambiente2, bolos, croissant];
@@ -477,7 +478,9 @@ function Index() {
                   </div>
                   <div className="flex items-end justify-between gap-4 px-3 py-5">
                     <h3 className="min-w-0 text-xl leading-snug text-primary">{e.nome}</h3>
-                    <p className="shrink-0 font-display text-2xl text-gold-deep">{e.preco}</p>
+                    {e.preco && (
+                      <p className="shrink-0 font-display text-2xl text-gold-deep">{e.preco}</p>
+                    )}
                   </div>
                 </div>
               </Reveal>

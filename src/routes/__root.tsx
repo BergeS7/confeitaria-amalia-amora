@@ -77,17 +77,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Amalia & Amora | Padaria Artesanal" },
+      { title: "Amália Amora | Confeitaria e Panificação em Penalva - MA" },
       {
         name: "description",
         content:
-          "Padaria artesanal Amalia & Amora: pães de fermentação natural, bolos, doces e café em um ambiente acolhedor.",
+          "Confeitaria Amália Amora em Penalva - MA: pães fresquinhos, bolos, doces e salgados. Encomendas pelo WhatsApp.",
       },
-      { name: "author", content: "Amalia & Amora" },
-      { property: "og:title", content: "Amalia & Amora | Padaria Artesanal" },
+      { name: "author", content: "Amália Amora" },
+      { name: "theme-color", content: "#1f1b17" },
+      { name: "robots", content: "index, follow" },
+      { property: "og:title", content: "Amália Amora | Confeitaria e Panificação em Penalva - MA" },
       {
         property: "og:description",
-        content: "Pães fresquinhos, doces artesanais e café feito com carinho todos os dias.",
+        content: "Sabor que conquista em cada mordida. Pães, doces e salgados em Penalva - MA.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -101,9 +103,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Karla:wght@300;400;500;600;700&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Great+Vibes&family=Karla:wght@300;400;500;600;700&display=swap",
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/favicon.ico", sizes: "any" },
+      { rel: "icon", href: "/icon-192.png", type: "image/png" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
     ],
   }),
 
@@ -115,7 +119,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <head>
         <HeadContent />
       </head>

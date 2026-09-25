@@ -1,10 +1,12 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Menu, X, MapPin, Clock, Phone, Instagram, Star, Wheat, Coffee, Cake } from "lucide-react";
 
 import { Reveal } from "@/components/Reveal";
 import { Cardapio } from "@/components/Cardapio";
 import { EncomendaForm } from "@/components/EncomendaForm";
+import { MapaComConsentimento } from "@/components/MapaComConsentimento";
+import { abrirPreferenciasCookies } from "@/lib/consentimento";
 import { SITE_URL, TELEFONE_EXIBICAO, linkWhatsApp } from "@/lib/contato";
 import hero from "@/assets/hero.jpg";
 import paes from "@/assets/paes.jpg";
@@ -794,13 +796,7 @@ function Index() {
 
             <Reveal delay={120}>
               <div className="h-full overflow-hidden rounded-[2rem] shadow-soft">
-                <iframe
-                  title="Mapa da Amália Amora"
-                  src={MAPA_EMBED}
-                  loading="lazy"
-                  className="h-80 w-full border-0 lg:h-full lg:min-h-[26rem]"
-                  referrerPolicy="no-referrer-when-downgrade"
-                />
+                <MapaComConsentimento src={MAPA_EMBED} rota={MAPA_ROTA} />
               </div>
             </Reveal>
           </div>
@@ -858,7 +854,21 @@ function Index() {
             </div>
           </div>
           <div className="mt-12 flex flex-col gap-4 border-t border-primary-foreground/15 pt-6 text-xs text-primary-foreground/60 sm:flex-row sm:items-center sm:justify-between">
-            <p>© {new Date().getFullYear()} Amália Amora. Todos os direitos reservados.</p>
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-5">
+              <p>© {new Date().getFullYear()} Amália Amora. Todos os direitos reservados.</p>
+              <Link
+                to="/privacidade"
+                className="w-fit underline-offset-4 hover:text-gold hover:underline"
+              >
+                Privacidade e cookies
+              </Link>
+              <button
+                onClick={abrirPreferenciasCookies}
+                className="w-fit text-left underline-offset-4 hover:text-gold hover:underline"
+              >
+                Preferências de cookies
+              </button>
+            </div>
             <a
               href={DESENVOLVEDOR_WHATSAPP}
               target="_blank"
